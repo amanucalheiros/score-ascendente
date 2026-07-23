@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Check, Shield, Clock, Gift } from "lucide-react";
+import { Check, Shield, Clock, Gift, Lock, CreditCard } from "lucide-react";
 import ebook from "@/assets/ebook-mockup.png";
 import { CTAButton } from "./CTAButton";
 
@@ -14,26 +14,49 @@ const items = [
   "Suporte por e-mail",
 ];
 
-function useCountdown(minutes: number) {
-  const [secs, setSecs] = useState(minutes * 60);
+const STORAGE_KEY = "gsa_deadline_v1";
+const WINDOW_MS = 24 * 60 * 60 * 1000; // 24h evergreen
+
+function useEvergreenCountdown() {
+  const [remaining, setRemaining] = useState<number>(WINDOW_MS);
+
   useEffect(() => {
-    const id = setInterval(() => setSecs((s) => (s > 0 ? s - 1 : 0)), 1000);
+    let deadline: number;
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      const parsed = stored ? parseInt(stored, 10) : NaN;
+      if (Number.isFinite(parsed) && parsed > Date.now()) {
+        deadline = parsed;
+      } else {
+        deadline = Date.now() + WINDOW_MS;
+        localStorage.setItem(STORAGE_KEY, String(deadline));
+      }
+    } catch {
+      deadline = Date.now() + WINDOW_MS;
+    }
+
+    const tick = () => setRemaining(Math.max(0, deadline - Date.now()));
+    tick();
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, []);
-  const m = String(Math.floor(secs / 60)).padStart(2, "0");
-  const s = String(secs % 60).padStart(2, "0");
-  return `${m}:${s}`;
+
+  const totalSecs = Math.floor(remaining / 1000);
+  const h = String(Math.floor(totalSecs / 3600)).padStart(2, "0");
+  const m = String(Math.floor((totalSecs % 3600) / 60)).padStart(2, "0");
+  const s = String(totalSecs % 60).padStart(2, "0");
+  return `${h}:${m}:${s}`;
 }
 
 export function Offer() {
-  const time = useCountdown(15);
+  const time = useEvergreenCountdown();
   return (
-    <section id="oferta" className="relative py-16 sm:py-24 px-4 bg-hero overflow-hidden">
+    <section id="oferta" className="relative py-16 sm:py-24 px-4 bg-hero overflow-hidden scroll-mt-20">
       <div className="absolute inset-0 grid-bg pointer-events-none" />
       <div className="relative max-w-4xl mx-auto">
         <div className="rounded-2xl bg-destructive/15 border border-destructive/40 px-4 py-3 flex items-center justify-center gap-3 text-center text-sm sm:text-base font-bold text-foreground animate-fade-up">
           <Clock className="h-5 w-5 text-destructive shrink-0" />
-          <span>⚠️ Oferta encerra em <span className="text-destructive font-black tabular-nums">{time}</span></span>
+          <span>⚠️ Sua oferta expira em <span className="text-destructive font-black tabular-nums">{time}</span></span>
         </div>
 
         <div className="relative mt-8 rounded-3xl bg-card-grad border border-primary/30 shadow-neon p-6 sm:p-10 animate-fade-up">
@@ -79,6 +102,23 @@ export function Offer() {
               <CTAButton size="xl" fullWidth>
                 QUERO GARANTIR MEU ACESSO AGORA
               </CTAButton>
+            </div>
+
+            {/* Trust seals */}
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <div className="h-7 px-2 rounded-md bg-foreground/10 border border-border flex items-center gap-1.5 font-black text-foreground">
+                  <CreditCard className="h-3.5 w-3.5 text-neon" />
+                  <span className="tracking-tight">Kiwify</span>
+                </div>
+                <span>Pagamento processado por Kiwify</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Lock className="h-3.5 w-3.5 text-neon" /> SSL 256-bit
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Shield className="h-3.5 w-3.5 text-neon" /> Garantia de 7 dias
+              </div>
             </div>
             <p className="mt-3 text-xs text-muted-foreground">Acesso liberado em até 5 minutos no seu e-mail.</p>
           </div>

@@ -2,6 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const faqs = [
   { q: "Funciona mesmo? Não é mais um curso furado?", a: "O método é o que milhares de alunos já aplicaram com resultado real. Não prometemos milagre — prometemos um caminho claro. Se você aplicar, funciona." },
+  { q: "Como sei que isso não é golpe?", a: "Sua compra é protegida por garantia incondicional de 7 dias — se não gostar, devolvemos 100% do valor sem perguntas. O pagamento é processado pela Kiwify, plataforma oficial usada por milhares de produtores, com criptografia SSL. Os dados completos da empresa responsável (razão social e CNPJ) estão no rodapé desta página." },
   { q: "Em quanto tempo vejo resultado?", a: "Os primeiros sinais aparecem em 30 a 60 dias. Resultados maiores (saltos grandes de score) costumam acontecer entre 60 e 120 dias seguindo o passo a passo." },
   { q: "Serve para quem está negativado?", a: "Sim. Existem capítulos específicos para quem está negativado, com a ordem certa de ações para limpar o nome de forma estratégica." },
   { q: "Preciso entender de finanças para acompanhar?", a: "Não. O guia foi escrito justamente para quem nunca entendeu nada de finanças. Linguagem simples, exemplos do dia a dia, sem economês." },
