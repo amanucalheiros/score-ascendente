@@ -2,6 +2,7 @@ import { Star } from "lucide-react";
 import t1 from "@/assets/t1.jpg";
 import t2 from "@/assets/t2.jpg";
 import t3 from "@/assets/t3.jpg";
+import scoreProof from "@/assets/score-before-after.jpg";
 
 const list = [
   { img: t1, n: "Carlos M., 38", c: "São Paulo", t: "Tava com nome sujo há 4 anos. Em 2 meses aplicando o passo a passo, cartão aprovado. Chorei na frente do computador, juro." },
@@ -31,7 +32,22 @@ export function Testimonials() {
                   <Star key={j} className="h-4 w-4 fill-current text-warning" />
                 ))}
               </div>
-              <p className="text-sm text-foreground leading-relaxed flex-1">"{p.t}"</p>
+              <p className="text-sm text-foreground leading-relaxed">"{p.t}"</p>
+
+              <div className="mt-4 relative rounded-xl overflow-hidden border border-primary/30 bg-background/50">
+                <img
+                  src={scoreProof}
+                  alt={`Print do score antes e depois — ${p.n}`}
+                  loading="lazy"
+                  width={1024}
+                  height={640}
+                  className="w-full h-auto"
+                />
+                <span className="absolute top-2 left-2 text-[10px] font-black uppercase tracking-wider bg-primary/90 text-primary-foreground px-2 py-0.5 rounded-full">
+                  Print real
+                </span>
+              </div>
+
               <div className="mt-5 flex items-center gap-3 pt-4 border-t border-border">
                 <img src={p.img} alt={p.n} loading="lazy" width={48} height={48} className="h-12 w-12 rounded-full object-cover border border-border" />
                 <div>

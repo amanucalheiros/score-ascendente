@@ -9,15 +9,38 @@ type Props = {
   className?: string;
   children?: React.ReactNode;
   pulse?: boolean;
+  /** If provided, scrolls smoothly to this element id instead of opening checkout */
+  scrollTo?: string;
 };
 
-export function CTAButton({ size = "lg", fullWidth = true, className, children = "QUERO MELHORAR MEU SCORE AGORA", pulse = true }: Props) {
+export function CTAButton({
+  size = "lg",
+  fullWidth = true,
+  className,
+  children = "QUERO MELHORAR MEU SCORE AGORA",
+  pulse = true,
+  scrollTo,
+}: Props) {
   const sizing = size === "xl" ? "px-8 py-6 text-base sm:text-lg" : "px-6 py-5 text-sm sm:text-base";
+
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!scrollTo) return;
+    e.preventDefault();
+    const el = document.getElementById(scrollTo);
+    if (el) {
+      const y = el.getBoundingClientRect().top + window.scrollY - 60;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+
+  const href = scrollTo ? `#${scrollTo}` : CHECKOUT_URL;
+  const targetProps = scrollTo ? {} : { target: "_blank", rel: "noopener noreferrer" };
+
   return (
     <a
-      href={CHECKOUT_URL}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={href}
+      onClick={handleScroll}
+      {...targetProps}
       className={cn(
         "group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl bg-cta text-primary-foreground font-extrabold uppercase tracking-wide shadow-cta transition-all hover:scale-[1.02] hover:shadow-neon",
         sizing,

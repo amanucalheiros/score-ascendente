@@ -1,5 +1,6 @@
-import ebook from "@/assets/ebook-mockup.png";
+import devices from "@/assets/devices-mockup.png";
 import { Sparkles, ShieldCheck, Users, ArrowDown } from "lucide-react";
+import { CTAButton } from "./CTAButton";
 
 export function Hero() {
   return (
@@ -24,7 +25,24 @@ export function Hero() {
             <Badge icon={<Sparkles className="h-4 w-4 text-warning" />}>4.9 ★ avaliação</Badge>
           </div>
 
-          <a href="#dor" className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-neon transition">
+          <div className="mt-8 flex justify-center lg:justify-start">
+            <CTAButton size="xl" scrollTo="oferta" pulse>
+              QUERO DESTRAVAR MEU CPF POR R$ 27,99
+            </CTAButton>
+          </div>
+
+          <a
+            href="#dor"
+            onClick={(e) => {
+              e.preventDefault();
+              const el = document.getElementById("dor");
+              if (el) {
+                const y = el.getBoundingClientRect().top + window.scrollY - 60;
+                window.scrollTo({ top: y, behavior: "smooth" });
+              }
+            }}
+            className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-neon transition"
+          >
             <ArrowDown className="h-4 w-4 animate-bounce" /> Veja o que tem dentro
           </a>
         </div>
@@ -35,11 +53,11 @@ export function Hero() {
             <div className="absolute bottom-0 right-10 h-64 w-64 rounded-full bg-primary/40" />
           </div>
           <img
-            src={ebook}
-            alt="Ebook Guia Score Alto"
-            width={1024}
-            height={1536}
-            className="relative w-[260px] sm:w-[340px] lg:w-[420px] drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] animate-float"
+            src={devices}
+            alt="Guia Score Alto no laptop e no celular"
+            width={1280}
+            height={960}
+            className="relative w-full max-w-[520px] drop-shadow-[0_30px_60px_rgba(0,0,0,0.6)] animate-float"
           />
         </div>
       </div>
